@@ -1,11 +1,17 @@
 import 'package:animate_do/animate_do.dart';
-import 'package:auto_route/annotations.dart';
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gestion_presence_cabrel/gen/assets.gen.dart';
+import 'package:gestion_presence_cabrel/src/blocs/employee/employee_cubit.dart';
+import 'package:gestion_presence_cabrel/src/blocs/presence/presences_cubit.dart';
+import 'package:gestion_presence_cabrel/src/mocks/mock_data_provider.dart';
+import 'package:gestion_presence_cabrel/src/repositories/employee_repository.dart';
+import 'package:gestion_presence_cabrel/src/repositories/presence_repository.dart';
 import 'package:gestion_presence_cabrel/src/screens/home/components/home_card.dart';
 
 @RoutePage()
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatelessWidget implements AutoRouteWrapper {
   const HomeScreen({super.key});
 
   @override
@@ -37,6 +43,29 @@ class HomeScreen extends StatelessWidget {
             ),
           ],
         ),
+      ),
+    );
+  }
+
+  @override
+  Widget wrappedRoute(BuildContext context) {
+    final mockDataProvider = MockDataProvider();
+    return RepositoryProvider(
+      create: (context) => mockDataProvider,
+      child: MultiBlocProvider(
+        providers: [
+          BlocProvider(
+            create: (context) =>
+                PresencesCubit(PresenceRepository(mockDataProvider))
+                  ..getPresences(),
+          ),
+          BlocProvider(
+            create: (context) =>
+                EmployeeCubit(EmployeeRepository(mockDataProvider))
+                  ..getEmployees(),
+          ),
+        ],
+        child: this,
       ),
     );
   }

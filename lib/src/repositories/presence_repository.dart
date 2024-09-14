@@ -28,6 +28,10 @@ class PresenceRepository {
         .toList();
   }
 
+  Presence getLastPresence(String matricule) {
+    return getPresencesByMatricule(matricule).last;
+  }
+
   Presence? addPresence(String matricule) {
     Presence lastPresence = getPresences().lastWhere(
       (p) {
