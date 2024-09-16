@@ -24,6 +24,9 @@ class EmployeeUpdatePresenceScreen extends StatelessWidget {
       create: (context) => PresencesCubit(context.read<PresenceRepository>())
         ..getLastPresence(employee.matricule),
       child: Scaffold(
+        appBar: AppBar(
+          title: Text(employee.matricule),
+        ),
         body: Center(
           child: BlocConsumer<PresencesCubit, PresencesState>(
             listener: (context, state) {

@@ -18,9 +18,12 @@ class OnboardingScreen extends StatelessWidget {
           FadeInUp(
             child: Assets.images.prSencesDesEmployS.image(),
           ),
-          FilledButton(
-            onPressed: () => context.router.replace(const HomeRoute()),
-            child: const Text('Commencer'),
+          Padding(
+            padding: const EdgeInsets.all(32.0),
+            child: FilledButton(
+              onPressed: () => context.router.replace(const HomeRoute()),
+              child: const Text('Commencer'),
+            ),
           ),
         ],
       ),

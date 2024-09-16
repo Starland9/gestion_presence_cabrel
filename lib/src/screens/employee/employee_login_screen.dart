@@ -74,7 +74,7 @@ class _EmployeeLoginScreenState extends State<EmployeeLoginScreen> {
                     },
                     listener: (BuildContext context, EmployeeState state) {
                       if (state is EmployeeLoaded) {
-                        context.router.push(EmployeeUpdatePresenceRoute(
+                        context.router.popAndPush(EmployeeUpdatePresenceRoute(
                           employee: state.employee,
                         ));
                       }
