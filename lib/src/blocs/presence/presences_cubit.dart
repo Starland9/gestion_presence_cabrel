@@ -8,6 +8,8 @@ part 'presences_state.dart';
 class PresencesCubit extends Cubit<PresencesState> {
   late final PresenceRepository _presenceRepository;
 
+  Presence? _presence;
+
   PresencesCubit(
     PresenceRepository presenceRepository,
   )   : _presenceRepository = presenceRepository,
@@ -37,9 +39,28 @@ class PresencesCubit extends Cubit<PresencesState> {
     emit(PresencesLoading());
     try {
       final lastPresence = _presenceRepository.getLastPresence(matricule);
-      emit(PresencesLoaded([lastPresence]));
+      _presence = lastPresence;
+      emit(PresenceLoaded(lastPresence));
     } on Exception catch (e) {
       emit(PresencesError(e.toString()));
     }
   }
+
+  void addPresence(String matricule) {
+    emit(PresencesLoading());
+    try {
+      final presence = _presenceRepository.addPresence(matricule);
+      _presence = presence;
+      emit(PresenceLoaded(presence));
+    } on Exception catch (e) {
+      emit(PresencesError(e.toString()));
+    }
+  }
+
+  Presence get presence =>
+      _presence ??
+      const Presence(
+        matricule: "",
+        dates: [],
+      );
 }

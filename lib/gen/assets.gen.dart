@@ -38,9 +38,13 @@ class $AssetsSvgsGen {
   SvgGenImage get employeeIdSvgrepoCom =>
       const SvgGenImage('assets/svgs/employee-id-svgrepo-com.svg');
 
+  /// File path: assets/svgs/triangle-svgrepo-com.svg
+  SvgGenImage get triangleSvgrepoCom =>
+      const SvgGenImage('assets/svgs/triangle-svgrepo-com.svg');
+
   /// List of all assets
   List<SvgGenImage> get values =>
-      [adminWithCogwheelsSvgrepoCom, employeeIdSvgrepoCom];
+      [adminWithCogwheelsSvgrepoCom, employeeIdSvgrepoCom, triangleSvgrepoCom];
 }
 
 class Assets {

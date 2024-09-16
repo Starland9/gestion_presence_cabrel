@@ -32,7 +32,7 @@ class PresenceRepository {
     return getPresencesByMatricule(matricule).last;
   }
 
-  Presence? addPresence(String matricule) {
+  Presence addPresence(String matricule) {
     Presence lastPresence = getPresences().lastWhere(
       (p) {
         return p.matricule == matricule && p.dates.last.isToday();
@@ -40,12 +40,15 @@ class PresenceRepository {
       orElse: () {
         return Presence(
           matricule: matricule,
-          dates: const [],
+          dates: List.empty(growable: true),
         );
       },
     );
 
-    if (lastPresence.dates.length < 2) {
+    if (lastPresence.dates.isEmpty) {
+      lastPresence.dates.add(DateTime.now());
+      _mockDataProvider.presences.add(lastPresence);
+    } else if (lastPresence.dates.length == 1) {
       lastPresence.dates.add(DateTime.now());
       _mockDataProvider.presences.add(lastPresence);
     }

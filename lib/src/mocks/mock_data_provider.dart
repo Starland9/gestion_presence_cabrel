@@ -11,7 +11,7 @@ class MockDataProvider {
 
   MockDataProvider._internal();
 
-  int count = 20;
+  int count = 5;
 
   late final List<Employee> employees = [
     ...List.generate(
@@ -30,7 +30,7 @@ class MockDataProvider {
 
   late final List<Presence> presences = [
     ...List.generate(
-      count * 30,
+      count,
       (_) => Presence(
         matricule: employees[Random().nextInt(employees.length)].matricule,
         dates: [

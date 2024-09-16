@@ -20,27 +20,31 @@ class HomeCard extends StatelessWidget {
     final theme = Theme.of(context);
     return Padding(
       padding: const EdgeInsets.all(32.0),
-      child: Card(
-        color: color,
-        child: Column(
-          children: [
-            const SizedBox(height: 24),
-            Expanded(
-              child: SvgPicture.asset(
-                imageSvgPath,
-                colorFilter: const ColorFilter.mode(
-                  Colors.white,
-                  BlendMode.srcIn,
+      child: InkWell(
+        onTap: onTap,
+        child: Card(
+          color: color,
+          child: Column(
+            children: [
+              const SizedBox(height: 24),
+              Expanded(
+                child: SvgPicture.asset(
+                  imageSvgPath,
+                  colorFilter: const ColorFilter.mode(
+                    Colors.white,
+                    BlendMode.srcIn,
+                  ),
                 ),
               ),
-            ),
-            const SizedBox(height: 24),
-            Text(
-              title,
-              style: theme.textTheme.titleLarge?.copyWith(color: Colors.white),
-            ),
-            const SizedBox(height: 24),
-          ],
+              const SizedBox(height: 24),
+              Text(
+                title,
+                style:
+                    theme.textTheme.titleLarge?.copyWith(color: Colors.white),
+              ),
+              const SizedBox(height: 24),
+            ],
+          ),
         ),
       ),
     );

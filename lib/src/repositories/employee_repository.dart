@@ -20,7 +20,7 @@ class EmployeeRepository {
     try {
       return _mockDataProvider.employees
           .firstWhere((employee) => employee.matricule == matricule);
-    } on Exception catch (e) {
+    }  catch (e) {
       debugPrint(e.toString());
       return null;
     }

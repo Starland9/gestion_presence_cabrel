@@ -1,4 +1,5 @@
 import 'package:equatable/equatable.dart';
+import 'package:gestion_presence_cabrel/src/extensions/datetime_extensions.dart';
 
 class Presence extends Equatable {
   const Presence({
@@ -12,11 +13,11 @@ class Presence extends Equatable {
   @override
   List<Object?> get props => [matricule, dates];
 
-  bool get isAbsent => dates.isEmpty;
+  DateTime get lastDate => dates.isNotEmpty ? dates.last : DateTime(2000);
 
-  bool get isPresent => !isAbsent;
+  bool get isToday => dates.isNotEmpty ? dates.last.isToday() : false;
 
-  DateTime get firstDate => dates.first;
-
-  DateTime get lastDate => dates.last;
+  void addDate(DateTime date) {
+    dates.add(date);
+  }
 }

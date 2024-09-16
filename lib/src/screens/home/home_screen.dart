@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gestion_presence_cabrel/gen/assets.gen.dart';
 import 'package:gestion_presence_cabrel/src/blocs/employee/employee_cubit.dart';
 import 'package:gestion_presence_cabrel/src/blocs/presence/presences_cubit.dart';
+import 'package:gestion_presence_cabrel/src/core/router/app_router.gr.dart';
 import 'package:gestion_presence_cabrel/src/mocks/mock_data_provider.dart';
 import 'package:gestion_presence_cabrel/src/repositories/employee_repository.dart';
 import 'package:gestion_presence_cabrel/src/repositories/presence_repository.dart';
@@ -27,7 +28,7 @@ class HomeScreen extends StatelessWidget implements AutoRouteWrapper {
                   imageSvgPath: Assets.svgs.employeeIdSvgrepoCom.path,
                   title: 'Employés',
                   color: theme.colorScheme.primary,
-                  onTap: () {},
+                  onTap: () => context.router.push(const EmployeeLoginRoute()),
                 ),
               ),
             ),
