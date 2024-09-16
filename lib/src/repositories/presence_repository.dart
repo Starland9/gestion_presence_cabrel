@@ -29,7 +29,11 @@ class PresenceRepository {
   }
 
   Presence getLastPresence(String matricule) {
-    return getPresencesByMatricule(matricule).last;
+    try {
+      return getPresencesByMatricule(matricule).last;
+    } catch (e) {
+      return Presence(matricule: matricule, dates: const []);
+    }
   }
 
   Presence addPresence(String matricule) {

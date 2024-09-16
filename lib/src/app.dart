@@ -51,6 +51,10 @@ class GPCApp extends StatelessWidget {
               ),
             ),
           ),
+          appBarTheme: const AppBarTheme(
+            backgroundColor: AppColors.primaryColor,
+            foregroundColor: AppColors.onPrimary,
+          ),
         ),
       ),
     );

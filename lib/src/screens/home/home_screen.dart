@@ -38,7 +38,7 @@ class HomeScreen extends StatelessWidget implements AutoRouteWrapper {
                   imageSvgPath: Assets.svgs.adminWithCogwheelsSvgrepoCom.path,
                   title: 'Administration',
                   color: theme.colorScheme.secondary,
-                  onTap: () {},
+                  onTap: () => context.router.push(const EmployeesListRoute()),
                 ),
               ),
             ),

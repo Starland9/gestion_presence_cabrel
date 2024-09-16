@@ -90,7 +90,7 @@ class EmployeeUpdatePresenceScreen extends StatelessWidget {
       children: [
         if (presence.dates.isNotEmpty)
           Text(
-            "Vous êtes arrivé à ${presence.dates.last.hour}:${presence.dates.last.minute}",
+            "Vous êtes arrivé à ${presence.dates.first.hour}:${presence.dates.first.minute.toString().padLeft(2, '0')}",
             style: theme.textTheme.titleLarge?.copyWith(
               color: Colors.green,
             ),
@@ -98,7 +98,7 @@ class EmployeeUpdatePresenceScreen extends StatelessWidget {
         const SizedBox(height: 16),
         if (presence.dates.length > 1)
           Text(
-            "Vous êtes rentré à ${presence.dates.last.hour}:${presence.dates.last.minute}",
+            "Vous êtes rentré à ${presence.dates.last.hour}:${presence.dates.last.minute.toString().padLeft(2, '0')}",
             style: theme.textTheme.titleLarge?.copyWith(
               color: Colors.red,
             ),
