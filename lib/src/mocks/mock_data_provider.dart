@@ -11,7 +11,7 @@ class MockDataProvider {
 
   MockDataProvider._internal();
 
-  int count = 5;
+  int count = 50;
 
   late final List<Employee> employees = [
     ...List.generate(
