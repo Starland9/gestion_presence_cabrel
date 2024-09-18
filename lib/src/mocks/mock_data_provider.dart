@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:faker/faker.dart';
 import 'package:gestion_presence_cabrel/src/models/employee.dart';
 import 'package:gestion_presence_cabrel/src/models/presence.dart';
@@ -28,16 +26,5 @@ class MockDataProvider {
     )
   ];
 
-  late final List<Presence> presences = [
-    ...List.generate(
-      count,
-      (_) => Presence(
-        matricule: employees[Random().nextInt(employees.length)].matricule,
-        dates: [
-          faker.date.dateTime(minYear: 2024, maxYear: 2024),
-          faker.date.dateTime(minYear: 2024, maxYear: 2024),
-        ],
-      ),
-    ),
-  ];
+  late final List<Presence> presences = [];
 }
