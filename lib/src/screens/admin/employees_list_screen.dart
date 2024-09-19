@@ -3,9 +3,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gestion_presence_cabrel/src/blocs/employee/employee_cubit.dart';
+import 'package:gestion_presence_cabrel/src/models/employee.dart';
+import 'package:gestion_presence_cabrel/src/models/presence.dart';
 import 'package:gestion_presence_cabrel/src/repositories/employee_repository.dart';
 import 'package:gestion_presence_cabrel/src/screens/admin/components/employee_list_item.dart';
-import 'package:gestion_presence_cabrel/src/shared/widgets/custom_loader.dart';
 
 @RoutePage()
 class EmployeesListScreen extends StatefulWidget {
@@ -18,6 +19,8 @@ class EmployeesListScreen extends StatefulWidget {
 class _EmployeesListScreenState extends State<EmployeesListScreen> {
   String _query = "";
 
+  final Map<Employee, Presence> _presences = {};
+
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
@@ -26,6 +29,9 @@ class _EmployeesListScreenState extends State<EmployeesListScreen> {
       child: Scaffold(
         appBar: AppBar(
           title: const Text("Liste des employés"),
+          actions: [
+            IconButton(onPressed: _generatePDF, icon: const Icon(Icons.print))
+          ],
           bottom: PreferredSize(
             preferredSize: const Size(double.maxFinite, 40),
             child: CupertinoSearchTextField(
@@ -39,30 +45,31 @@ class _EmployeesListScreenState extends State<EmployeesListScreen> {
         ),
         body: BlocBuilder<EmployeeCubit, EmployeeState>(
           builder: (context, state) {
-            if (state is EmployeeListLoaded) {
-              final employees = state.employees
-                  .where((e) =>
-                      e.matricule
-                          .toLowerCase()
-                          .contains(_query.toLowerCase()) ||
-                      e.name.toLowerCase().contains(_query.toLowerCase()))
-                  .toList();
+            final employees = state is EmployeeListLoaded
+                ? state.employees
+                    .where((e) =>
+                        e.matricule
+                            .toLowerCase()
+                            .contains(_query.toLowerCase()) ||
+                        e.name.toLowerCase().contains(_query.toLowerCase()))
+                    .toList()
+                : List<Employee>.empty();
 
-              if (employees.isEmpty) {
-                return const Center(
-                  child: Text("Aucun employé"),
-                );
-              }
-
-              return SingleChildScrollView(
-                child: Column(
-                  children: [
-                    for (final emp in employees) EmployeeListItem(emp: emp),
-                  ],
-                ),
-              );
-            }
-            return const Center(child: CustomLoader());
+            return employees.isEmpty
+                ? const Center(
+                    child: Text("Aucun employé"),
+                  )
+                : ListView.builder(
+                    itemCount: employees.length,
+                    itemBuilder: (context, index) {
+                      final emp = employees[index];
+                      return EmployeeListItem(
+                        key: ValueKey<String>(emp.matricule),
+                        emp: emp,
+                        onGetPresence: _addPresence,
+                      );
+                    },
+                  );
           },
         ),
       ),
@@ -73,5 +80,15 @@ class _EmployeesListScreenState extends State<EmployeesListScreen> {
     setState(() {
       _query = value;
     });
+  }
+
+  _addPresence(Employee p1, Presence p2) {
+    setState(() {
+      _presences[p1] = p2;
+    });
+  }
+
+  void _generatePDF() {
+    print(_presences);
   }
 }

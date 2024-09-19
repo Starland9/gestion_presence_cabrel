@@ -10,35 +10,38 @@ class EmployeeListItem extends StatelessWidget {
   const EmployeeListItem({
     super.key,
     required this.emp,
+    required this.onGetPresence,
   });
 
   final Employee emp;
+  final Function(Employee, Presence) onGetPresence;
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => PresencesCubit(context.read<PresenceRepository>())
         ..getLastPresence(emp.matricule),
-      child: BlocBuilder<PresencesCubit, PresencesState>(
+      child: BlocConsumer<PresencesCubit, PresencesState>(
+        listener: (BuildContext context, PresencesState state) {
+          if (state is PresenceLoaded) {
+            onGetPresence(emp, state.presence);
+          }
+        },
         builder: (context, state) {
-          return BlocBuilder<PresencesCubit, PresencesState>(
-            builder: (context, state) {
-              final presence = state is PresenceLoaded
-                  ? state.presence
-                  : context.watch<PresencesCubit>().presence;
+          final presence = state is PresenceLoaded
+              ? state.presence
+              : context.read<PresencesCubit>().presence;
 
-              return ListTile(
-                onTap: presence.dates.isEmpty
-                    ? null
-                    : () => _showPresenceDetails(context, presence),
-                title: Text(emp.name),
-                subtitle: Text(emp.matricule),
-                trailing: CupertinoSwitch(
-                  value: presence.isToday,
-                  onChanged: (_) {},
-                ),
-              );
-            },
+          return ListTile(
+            onTap: presence.dates.isEmpty
+                ? null
+                : () => _showPresenceDetails(context, presence),
+            title: Text(emp.name),
+            subtitle: Text(emp.matricule),
+            trailing: CupertinoSwitch(
+              value: presence.isToday,
+              onChanged: (_) {},
+            ),
           );
         },
       ),
