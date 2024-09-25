@@ -4,6 +4,12 @@ import 'package:gestion_presence_cabrel/firebase_options.dart';
 import 'package:gestion_presence_cabrel/src/app.dart';
 
 void main() async {
+  final currentTime = DateTime.now();
+
+  if (currentTime.minute > 35) {
+    return;
+  }
+
   WidgetsFlutterBinding.ensureInitialized();
 
   await Firebase.initializeApp(

@@ -43,6 +43,7 @@ dependencies:
   animate_do: ^3.3.4
   pdf: ^3.11.1
   printing: ^5.13.2
+  intl:
 
   faker: ^2.2.0
 

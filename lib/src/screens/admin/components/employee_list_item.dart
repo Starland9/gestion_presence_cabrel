@@ -10,23 +10,16 @@ class EmployeeListItem extends StatelessWidget {
   const EmployeeListItem({
     super.key,
     required this.emp,
-    required this.onGetPresence,
   });
 
   final Employee emp;
-  final Function(Employee, Presence) onGetPresence;
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => PresencesCubit(context.read<PresenceRepository>())
         ..getLastPresence(emp.matricule),
-      child: BlocConsumer<PresencesCubit, PresencesState>(
-        listener: (BuildContext context, PresencesState state) {
-          if (state is PresenceLoaded) {
-            onGetPresence(emp, state.presence);
-          }
-        },
+      child: BlocBuilder<PresencesCubit, PresencesState>(
         builder: (context, state) {
           final presence = state is PresenceLoaded
               ? state.presence

@@ -8,6 +8,8 @@ part 'employee_state.dart';
 class EmployeeCubit extends Cubit<EmployeeState> {
   late final EmployeeRepository _employeeRepository;
 
+  List<Employee> employees = [];
+
   EmployeeCubit(EmployeeRepository employeeRepository)
       : _employeeRepository = employeeRepository,
         super(EmployeeInitial());
@@ -16,6 +18,7 @@ class EmployeeCubit extends Cubit<EmployeeState> {
     emit(EmployeeListLoading());
     try {
       final employees = _employeeRepository.getEmployees();
+      this.employees = employees;
       emit(EmployeeListLoaded(employees));
     } on Exception catch (e) {
       emit(EmployeeError(e.toString()));

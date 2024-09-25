@@ -3,8 +3,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gestion_presence_cabrel/src/blocs/employee/employee_cubit.dart';
+import 'package:gestion_presence_cabrel/src/core/router/app_router.gr.dart';
 import 'package:gestion_presence_cabrel/src/models/employee.dart';
-import 'package:gestion_presence_cabrel/src/models/presence.dart';
 import 'package:gestion_presence_cabrel/src/repositories/employee_repository.dart';
 import 'package:gestion_presence_cabrel/src/screens/admin/components/employee_list_item.dart';
 
@@ -19,18 +19,25 @@ class EmployeesListScreen extends StatefulWidget {
 class _EmployeesListScreenState extends State<EmployeesListScreen> {
   String _query = "";
 
-  final Map<Employee, Presence> _presences = {};
+  late final EmployeeCubit _employeeCubit;
+
+  @override
+  void initState() {
+    _employeeCubit = EmployeeCubit(context.read<EmployeeRepository>());
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) =>
-          EmployeeCubit(context.read<EmployeeRepository>())..getEmployees(),
+      create: (context) => _employeeCubit..getEmployees(),
       child: Scaffold(
         appBar: AppBar(
           title: const Text("Liste des employés"),
           actions: [
-            IconButton(onPressed: _generatePDF, icon: const Icon(Icons.print))
+            IconButton(
+                onPressed: () => _generatePDF(_employeeCubit),
+                icon: const Icon(Icons.print))
           ],
           bottom: PreferredSize(
             preferredSize: const Size(double.maxFinite, 40),
@@ -66,7 +73,6 @@ class _EmployeesListScreenState extends State<EmployeesListScreen> {
                       return EmployeeListItem(
                         key: ValueKey<String>(emp.matricule),
                         emp: emp,
-                        onGetPresence: _addPresence,
                       );
                     },
                   );
@@ -82,13 +88,8 @@ class _EmployeesListScreenState extends State<EmployeesListScreen> {
     });
   }
 
-  _addPresence(Employee p1, Presence p2) {
-    setState(() {
-      _presences[p1] = p2;
-    });
-  }
-
-  void _generatePDF() {
-    print(_presences);
+  void _generatePDF(EmployeeCubit employeeCubit) async {
+    await context.router
+        .push(PdfGenerationRoute(employees: employeeCubit.employees));
   }
 }
