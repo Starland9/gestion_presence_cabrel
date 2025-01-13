@@ -5,7 +5,7 @@ import 'package:gestion_presence_cabrel/src/app.dart';
 
 void main() async {
   final currentTime = DateTime.now();
-  final freeTestFinalDate = DateTime(2025, 1, 1);
+  final freeTestFinalDate = DateTime(2025, 6, 1);
 
   if (currentTime.isAfter(freeTestFinalDate)) {
     return;
